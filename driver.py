@@ -16,6 +16,8 @@ def parse_arguments():
         "-p", "--pull", help="pull from repo", action="store_true")
     parser.add_argument(
         "-r", "--requirements", help="install requirements", action="store_true")
+    parser.add_argument(
+        "-i", "--initialise", help="run initialisation script", action="store_true")
     return parser.parse_args()
 
 
@@ -31,6 +33,10 @@ if __name__ == '__main__':
         # install using requirements.txt
         subprocess.call(
             ['pip3', 'install', '-r', 'web_server/requirements.txt'])
+
+    if args.initialise:
+        # run initialise script
+        subprocess.call(['python3', 'web_server/init.py'])
 
     # run scripts as separate processes
     scripts = ['web_server/app.py', 'slam/app.py']
