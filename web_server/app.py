@@ -15,6 +15,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
+
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
@@ -23,9 +24,10 @@ class Todo(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.id
 
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    
+
     img = BytesIO()
 
     x = np.linspace(0, 2*np.pi, 101)
@@ -36,9 +38,9 @@ def index():
     plt.grid()
     plt.xlabel('Angle [rad]')
     plt.ylabel('Amplitude')
-    plt.xlim(x[0], x[-1])    
-    plt.savefig(img, format='png')    
-    
+    plt.xlim(x[0], x[-1])
+    plt.savefig(img, format='png')
+
     img.seek(0)
     img = base64.b64encode(img.getvalue()).decode()
 
@@ -57,6 +59,7 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html', tasks=tasks, figure=img)
 
+
 @app.route('/delete/<int:id>')
 def delete(id):
     task_to_delete = Todo.query.get_or_404(id)
@@ -68,10 +71,11 @@ def delete(id):
     except:
         return 'There was a problem deleting that task'
 
+
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
     task = Todo.query.get_or_404(id)
-    
+
     if request.method == 'POST':
         task.content = request.form['content']
 
@@ -82,6 +86,7 @@ def update(id):
             return "Could not update that task"
     else:
         return render_template('update.html', task=task)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
