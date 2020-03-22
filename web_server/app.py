@@ -12,6 +12,7 @@ from io import BytesIO
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
