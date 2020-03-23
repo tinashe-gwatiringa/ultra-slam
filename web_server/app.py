@@ -34,13 +34,13 @@ def index():
     x = np.linspace(0, 2*np.pi, 101)
     y = np.sin(x)
 
-    plt.figure()
     plt.plot(x, y)
     plt.grid()
     plt.xlabel('Angle [rad]')
     plt.ylabel('Amplitude')
     plt.xlim(x[0], x[-1])
-    plt.savefig(img, format='png')
+    plt.savefig(img, format='png', transparent=True, pad_inches=0)
+    plt.close()
 
     img.seek(0)
     img = base64.b64encode(img.getvalue()).decode()
