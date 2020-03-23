@@ -1,15 +1,14 @@
 #! /usr/bin/python3
 
-from flask import Flask, render_template, url_for, request, redirect, make_response, Response
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from io import BytesIO
 
+import json
 import base64
 import numpy as np
 import matplotlib.pyplot as plt
-
-from io import BytesIO
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
