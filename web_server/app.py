@@ -5,7 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from io import BytesIO
 
-import json
+from parser import parser
+
+import threading
 import base64
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,6 +16,17 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
+
+pages = [
+    'web_server/pages/options.json',
+    'web_server/pages/status.json'
+]
+
+threads = list()
+for i in range(len(pages)):
+    threads.append(threading.Thread(target=parser.parse,
+                                    args=(pages[i],), name=i, daemon=True))
+    threads[i].start()
 
 
 class Todo(db.Model):
@@ -89,4 +102,4 @@ def update(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
